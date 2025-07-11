@@ -25,3 +25,10 @@ def analyze(request: MarketRequest):
     result = AgentOrchestrator().run_pipeline(request)
     return result
 
+
+@app.get("/")
+def home():
+    return {
+        "message": "✅ Welcome to CrewInsight - Business Analyst Agent API!",
+        "usage": "Go to /docs to test the API or use the /analyze endpoint with a POST request."
+    }
