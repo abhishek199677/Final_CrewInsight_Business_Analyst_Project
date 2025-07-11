@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException, Header
+from fastapi.responses import HTMLResponse
 from app.models import MarketRequest, SummaryResponse
 from app.orchestrator import AgentOrchestrator
 import os
@@ -15,20 +16,21 @@ def verify_api_key(x_api_key: str = Header(...)):
         raise HTTPException(status_code=401, detail="Unauthorized")
 
 
-@app.get("/")
-def read_root():
-    return {"message": "Welcome to CrewInsight API. Use the /analyze endpoint to analyze market data."}
+@app.get("/", response_class=HTMLResponse)
+def home():
+    return """
+    <html>
+        <head><title>CrewInsight API</title></head>
+        <body style="font-family: Arial; text-align: center; padding: 50px;">
+            <h1>✅ Welcome to CrewInsight - Business Analyst Agent</h1>
+            <p>Visit the <a href='/docs'>Swagger UI</a> to test the API.</p>
+            <p>Or use the <code>/analyze</code> endpoint with your market query.</p>
+        </body>
+    </html>
+    """
 
 
 @app.post("/analyze", response_model=SummaryResponse, dependencies=[Depends(verify_api_key)])
 def analyze(request: MarketRequest):
     result = AgentOrchestrator().run_pipeline(request)
     return result
-
-
-@app.get("/")
-def home():
-    return {
-        "message": "✅ Welcome to CrewInsight - Business Analyst Agent API!",
-        "usage": "Go to /docs to test the API or use the /analyze endpoint with a POST request."
-    }
