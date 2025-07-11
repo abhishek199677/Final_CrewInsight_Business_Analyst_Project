@@ -14,7 +14,14 @@ def verify_api_key(x_api_key: str = Header(...)):
     if x_api_key != API_KEY:
         raise HTTPException(status_code=401, detail="Unauthorized")
 
+
+@app.get("/")
+def read_root():
+    return {"message": "Welcome to CrewInsight API. Use the /analyze endpoint to analyze market data."}
+
+
 @app.post("/analyze", response_model=SummaryResponse, dependencies=[Depends(verify_api_key)])
 def analyze(request: MarketRequest):
     result = AgentOrchestrator().run_pipeline(request)
     return result
+
