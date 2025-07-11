@@ -7,7 +7,7 @@ load_dotenv()
 class MarketDataCollector:
     def fetch_data(self, request):
         api_key = os.getenv("NEWS_API_KEY")
-        query = request.market
+        query = request.market or "technology"
         url = (
             f"https://newsapi.org/v2/everything?"
             f"q={query}&"
@@ -25,6 +25,8 @@ class MarketDataCollector:
         if not articles:
             return "No news articles found."
 
-        # Combine all titles + descriptions as a string
-        content = "\n".join([f"{a['title']} - {a['description']}" for a in articles if a['description']])
+        content = "\n".join([
+            f"{a['title']} - {a['description']}"
+            for a in articles if a['description']
+        ])
         return content
