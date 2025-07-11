@@ -9,7 +9,7 @@ class TrendAnalyzer:
     def analyze(self, data):
         prompt = f"Analyze the following market data and extract 2 key trends:\n{data}"
         response = client.chat.completions.create(
-            model="gpt-4",
+            model="gpt-3.5-turbo",
             messages=[
                 {"role": "system", "content": "You are a market analysis assistant."},
                 {"role": "user", "content": prompt}
