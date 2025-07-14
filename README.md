@@ -86,7 +86,7 @@ pip install -r requirements.txt
 
 uvicorn app.main:app --reload --port 8000
 
-Visit: http://127.0.0.1:8000/docs for Swagger UI
+Visit: http://127.0.0.1:8000/docs#/default/analyze_analyze_post
 
 
 
